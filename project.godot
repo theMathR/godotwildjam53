@@ -28,6 +28,10 @@ config/icon="res://icon.png"
 version_control_autoload_on_startup=true
 version_control_plugin_name="GitAPI"
 
+[editor_plugins]
+
+enabled=PoolStringArray( "res://addons/jamcountdown/plugin.cfg" )
+
 [gui]
 
 common/drop_mouse_on_gui_input_disabled=true
