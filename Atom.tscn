@@ -22,7 +22,7 @@ script = ExtResource( 2 )
 shape = SubResource( 1 )
 
 [node name="VisibilityNotifier2D" type="VisibilityNotifier2D" parent="."]
-rect = Rect2( -30, -30, 60, 60 )
+rect = Rect2( -20, -20, 40, 40 )
 
 [node name="Sprite" type="Sprite" parent="."]
 scale = Vector2( 0.25, 0.25 )
