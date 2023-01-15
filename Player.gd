@@ -3,6 +3,7 @@ extends KinematicBody2D
 const R_SPEED = 0.05
 const SPEED = 200
 onready var screen_size = get_viewport_rect().size
+var attracted = null
 
 func _physics_process(delta):
 	if Input.is_action_pressed("ui_left"):
