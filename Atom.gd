@@ -13,11 +13,27 @@ var atom_3 = preload("res://assets/3.png")
 var atom_4 = preload("res://assets/4.png")
 var atom_5 = preload("res://assets/5.png")
 var atom_6 = preload("res://assets/6.png")
+var atom_7 = preload("res://assets/7.png")
+var atom_8 = preload("res://assets/8.png")
+var atom_9 = preload("res://assets/9.png")
+var atom_10 = preload("res://assets/10.png")
+var atom_11 = preload("res://assets/11.png")
+var atom_12 = preload("res://assets/12.png")
+var atom_13 = preload("res://assets/13.png")
+var atom_14 = preload("res://assets/14.png")
+var atom_15 = preload("res://assets/15.png")
+var atom_16 = preload("res://assets/16.png")
+var atom_17 = preload("res://assets/17.png")
+var atom_18 = preload("res://assets/18.png")
+var atom_19 = preload("res://assets/19.png")
+var atom_20 = preload("res://assets/20.png")
+var atom_21 = preload("res://assets/21.png")
+var atom_22 = preload("res://assets/22.png")
    
 func _ready():
 	var random = RandomNumberGenerator.new()
 	random.randomize()
-	type_atom = random.randi_range(0, 6)
+	type_atom = random.randi_range(0, 22)
 	print(type_atom)
 	if type_atom == 1:
 		$Sprite.set_texture(atom_1)
@@ -31,6 +47,38 @@ func _ready():
 		$Sprite.set_texture(atom_5)
 	elif type_atom == 6:
 		$Sprite.set_texture(atom_6) 
+	elif type_atom == 7:
+		$Sprite.set_texture(atom_7)
+	elif type_atom == 8:
+		$Sprite.set_texture(atom_8)
+	elif type_atom == 9:
+		$Sprite.set_texture(atom_9)
+	elif type_atom == 10:
+		$Sprite.set_texture(atom_10)
+	elif type_atom == 11:
+		$Sprite.set_texture(atom_11)
+	elif type_atom == 12:
+		$Sprite.set_texture(atom_12)
+	elif type_atom == 13:
+		$Sprite.set_texture(atom_13)
+	elif type_atom == 14:
+		$Sprite.set_texture(atom_14)
+	elif type_atom == 15:
+		$Sprite.set_texture(atom_15)
+	elif type_atom == 16:
+		$Sprite.set_texture(atom_16) 
+	elif type_atom == 17:
+		$Sprite.set_texture(atom_17)
+	elif type_atom == 18:
+		$Sprite.set_texture(atom_18)
+	elif type_atom == 19:
+		$Sprite.set_texture(atom_19)
+	elif type_atom == 20:
+		$Sprite.set_texture(atom_20)
+	elif type_atom == 21:
+		$Sprite.set_texture(atom_21)  
+	elif type_atom == 22:
+		$Sprite.set_texture(atom_22)  
 	
 	 
 
