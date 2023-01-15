@@ -33,14 +33,22 @@ const atom_sprites = [
 ]
    
 func _ready():
-	var random = RandomNumberGenerator.new()
-	random.randomize()
-	type_atom = random.randi_range(0, 21)
-	$Sprite.set_texture(atom_sprites[type_atom])
+	randomize()
+	type_atom = randi() % 22
+	$CollisionShape2D/Sprite.set_texture(atom_sprites[type_atom])
+	
+	if type_atom == 0: # Hydrogen
+		$CollisionShape2D.scale.x = 0.7
+	elif type_atom == 21: # Uranium
+		$CollisionShape2D.scale.x = 1.4
+	elif type_atom > 18: # Tungsten/Thorium
+		$CollisionShape2D.scale.x = 1.2
+	elif type_atom > 9:
+		$CollisionShape2D.scale.x = 1.1
+	$CollisionShape2D.scale.y = $CollisionShape2D.scale.x
+	
 	$Timer.start()
-	 
-
-
+	
 func _on_VisibilityNotifier2D_screen_exited():
 	queue_free()
 
@@ -88,7 +96,3 @@ func _integrate_forces(state):
 			add_child(joint)
 			connected_to[h.get_path()] = joint.get_path()
 			h.got_connected_to.append(self)
-
-
-func _on_Timer_timeout():
-	queue_free()
