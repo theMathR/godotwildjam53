@@ -6,7 +6,6 @@ var attached = false
 var speed = 0
 var connected_to = {}
 var got_connected_to = []
-<<<<<<< HEAD
 var type_atom = 0
 var atom_1 = preload("res://assets/1.png")
 var atom_2 = preload("res://assets/2.png")
@@ -33,8 +32,6 @@ func _ready():
 		$Sprite.set_texture(atom_6) 
 	
 	 
-=======
->>>>>>> 7587dc9284e58cc7eec96ae069279cc05325c155
 
 func _on_VisibilityNotifier2D_screen_exited():
 	queue_free()
