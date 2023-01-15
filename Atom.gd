@@ -47,8 +47,6 @@ func _ready():
 		$CollisionShape2D.scale.x = 1.1
 	$CollisionShape2D.scale.y = $CollisionShape2D.scale.x
 	
-	$Timer.start()
-	
 func _on_VisibilityNotifier2D_screen_exited():
 	queue_free()
 
