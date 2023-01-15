@@ -5,7 +5,7 @@ const SPEED = 200
 onready var screen_size = get_viewport_rect().size
 var attracted = null
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	if Input.is_action_pressed("ui_left"):
 		rotate(-R_SPEED)
 	if Input.is_action_pressed("ui_right"):
