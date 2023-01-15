@@ -15,7 +15,6 @@ script = ExtResource( 3 )
 atom_scene = ExtResource( 4 )
 
 [node name="AtomTimer" type="Timer" parent="."]
-wait_time = 0.5
 
 [node name="Path2D" type="Path2D" parent="."]
 curve = SubResource( 1 )
