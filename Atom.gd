@@ -4,48 +4,30 @@ onready var player = get_node('../Player')
 var in_attraction_area = false
 var attached = false
 var speed = 0
-var connected_to = {}
-var got_connected_to = []
-var type_atom = 0
-const atom_sprites = [
-	preload("res://assets/1.png"),
-	preload("res://assets/2.png"),
-	preload("res://assets/3.png"),
-	preload("res://assets/4.png"),
-	preload("res://assets/5.png"),
-	preload("res://assets/6.png"),
-	preload("res://assets/7.png"),
-	preload("res://assets/8.png"),
-	preload("res://assets/9.png"),
-	preload("res://assets/10.png"),
-	preload("res://assets/11.png"),
-	preload("res://assets/12.png"),
-	preload("res://assets/13.png"),
-	preload("res://assets/14.png"),
-	preload("res://assets/15.png"),
-	preload("res://assets/16.png"),
-	preload("res://assets/17.png"),
-	preload("res://assets/18.png"),
-	preload("res://assets/19.png"),
-	preload("res://assets/20.png"),
-	preload("res://assets/21.png"),
-	preload("res://assets/22.png")
-]
-   
+var scal = 1
+
+var atom_type = 0
+
+var connections = {}
+
+#var outer_electrons = 0
+var elneg = 0
+#const connections_strengh = [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}]
+const electronegativity = [2.2, 0, 0.98, 1.57, 2.04, 2.55, 3.44, 3.98, 0, 0.93, 1.31, 1.61, 1.9, 2.19, 2.58, 3.16, 0.82, 1, 2.36, 0, 0]
+
 func _ready():
-	randomize()
-	type_atom = randi() % 22
-	$CollisionShape2D/Sprite.set_texture(atom_sprites[type_atom])
-	
-	if type_atom == 0: # Hydrogen
-		$CollisionShape2D.scale.x = 0.7
-	elif type_atom == 21: # Uranium
-		$CollisionShape2D.scale.x = 1.4
-	elif type_atom > 18: # Tungsten/Thorium
-		$CollisionShape2D.scale.x = 1.2
-	elif type_atom > 9:
-		$CollisionShape2D.scale.x = 1.1
-	$CollisionShape2D.scale.y = $CollisionShape2D.scale.x
+	elneg = electronegativity[atom_type]
+	if atom_type == 0: # Hydrogen
+		scal = 0.7
+	elif atom_type == 21: # Uranium
+		scal = 1.4
+	elif atom_type > 18: # Tungsten/Thorium
+		scal = 1.2
+	elif atom_type > 9:
+		scal = 1.1
+	$CollisionShape2D.scale.x = scal
+	$CollisionShape2D.scale.y = scal
+	scal *= 25
 	
 func _on_VisibilityNotifier2D_screen_exited():
 	queue_free()
@@ -67,12 +49,15 @@ func _physics_process(_delta):
 	update()
 
 func _draw():
-	for c in connected_to.keys():
+	for c in connections.keys():
 		if not has_node(c):
-			get_node(connected_to[c]).queue_free()
-			connected_to.erase(c)
+			connections[c].queue_free()
+			connections.erase(c)
 			continue
-		draw_line(Vector2.ZERO, get_node(c).position - position, Color.blue, 5)
+		var a = get_node(c)
+		var b = a.position - position
+		var d = a.get_node('./CollisionShape2D').scale.x
+		draw_line(b.normalized()*scal, b-(b.normalized()*a.scal), Color.white, 5)
 
 func _integrate_forces(state):
 	if in_attraction_area:
@@ -85,12 +70,12 @@ func _integrate_forces(state):
 			attached = false
 	for c in state.get_contact_count():
 		var h = state.get_contact_collider_object(c)
-		if h is RigidBody2D and not h.get_path() in connected_to.keys() and not h in got_connected_to:
+		if h is RigidBody2D and not h.get_path() in connections.keys():
 			var joint = DampedSpringJoint2D.new()
 			joint.disable_collision = false
 			joint.length = 15
 			joint.node_a = get_path()
 			joint.node_b = h.get_path()
-			add_child(joint)
-			connected_to[h.get_path()] = joint.get_path()
-			h.got_connected_to.append(self)
+			get_parent().add_child(joint)
+			connections[h.get_path()] = joint
+			h.connections[get_path()] = joint
