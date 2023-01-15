@@ -6,7 +6,7 @@
 [ext_resource path="res://addons/jamcountdown/element_theme.tres" type="Theme" id=4]
 
 [sub_resource type="DynamicFont" id=3]
-size = 20
+size = 15
 font_data = ExtResource( 3 )
 
 [sub_resource type="DynamicFont" id=4]
@@ -15,9 +15,8 @@ font_data = ExtResource( 2 )
 [node name="Countdown" type="PanelContainer"]
 anchor_left = 1.0
 anchor_right = 1.0
-margin_left = -270.0
-margin_right = 230.0
-margin_bottom = 100.0
+margin_left = -198.0
+margin_bottom = 24.0
 grow_horizontal = 0
 size_flags_horizontal = 5
 size_flags_vertical = 5
@@ -31,8 +30,8 @@ minute = 0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 margin_left = 5.0
-margin_right = 495.0
-margin_bottom = 100.0
+margin_right = 201.0
+margin_bottom = 24.0
 grow_horizontal = 0
 size_flags_horizontal = 5
 size_flags_vertical = 5
@@ -42,28 +41,27 @@ __meta__ = {
 }
 
 [node name="TitleLabel" type="Label" parent="HBoxContainer"]
-margin_left = 91.0
-margin_right = 270.0
-margin_bottom = 100.0
+margin_right = 68.0
+margin_bottom = 24.0
 size_flags_horizontal = 5
 size_flags_vertical = 5
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_fonts/font = SubResource( 3 )
-text = "Godot Wild Jam #53"
+text = "GameJam"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="CountdownLabel" type="Label" parent="HBoxContainer"]
-margin_left = 274.0
-margin_right = 398.0
-margin_bottom = 100.0
+margin_left = 72.0
+margin_right = 196.0
+margin_bottom = 24.0
 grow_horizontal = 0
 size_flags_horizontal = 5
 size_flags_vertical = 3
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_fonts/font = SubResource( 4 )
-text = "09d 01h 01m 53s"
+text = "02d 18h 44m 10s"
 __meta__ = {
 "_edit_use_anchors_": false
 }
