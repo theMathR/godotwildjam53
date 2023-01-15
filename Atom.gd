@@ -37,8 +37,9 @@ func _ready():
 	random.randomize()
 	type_atom = random.randi_range(0, 21)
 	$Sprite.set_texture(atom_sprites[type_atom])
-	
+	$Timer.start()
 	 
+
 
 func _on_VisibilityNotifier2D_screen_exited():
 	queue_free()
@@ -87,3 +88,7 @@ func _integrate_forces(state):
 			add_child(joint)
 			connected_to[h.get_path()] = joint.get_path()
 			h.got_connected_to.append(self)
+
+
+func _on_Timer_timeout():
+	queue_free()
