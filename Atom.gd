@@ -15,9 +15,10 @@ var atom_5 = preload("res://assets/5.png")
 var atom_6 = preload("res://assets/6.png")
    
 func _ready():
-	var rng = RandomNumberGenerator.new()
-	rng.randomize()
-	type_atom = rng.randf_range(1 , 6)
+	var random = RandomNumberGenerator.new()
+	random.randomize()
+	type_atom = random.randi_range(0, 6)
+	print(type_atom)
 	if type_atom == 1:
 		$Sprite.set_texture(atom_1)
 	elif type_atom == 2:
