@@ -1,6 +1,7 @@
 extends Node2D
 
 export(PackedScene) var atom_scene
+onready var atoms_parent = get_node("Atoms")
 
 const atom_sprites = [
 	preload("res://assets/1.png"),
@@ -32,6 +33,7 @@ func _ready():
 	$AtomTimer.start()
 
 func _on_AtomTimer_timeout():
+	print(get_node("Connections").get_child_count())
 	# Create a new instance of the atom scene.
 	var atom = atom_scene.instance()
 
@@ -58,5 +60,4 @@ func _on_AtomTimer_timeout():
 	$Player/Area2D.connect("body_exited", atom, "_on_Area2D_body_exited")
 
 	# Spawn the atom by adding it to the Main scene.
-	add_child(atom)
-
+	atoms_parent.add_child(atom)
