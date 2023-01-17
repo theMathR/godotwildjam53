@@ -6,7 +6,36 @@
 [sub_resource type="PhysicsMaterial" id=2]
 friction = 0.0
 bounce = 1.0
+[gd_scene load_steps=4 format=2]
 
+[ext_resource path="res://Atom.gd" type="Script" id=2]
+
+[sub_resource type="PhysicsMaterial" id=2]
+friction = 0.0
+bounce = 1.0
+
+[sub_resource type="CircleShape2D" id=1]
+radius = 28.0179
+
+[node name="Atom" type="RigidBody2D"]
+mode = 2
+physics_material_override = SubResource( 2 )
+gravity_scale = 0.0
+contacts_reported = 10
+contact_monitor = true
+script = ExtResource( 2 )
+
+[node name="VisibilityNotifier2D" type="VisibilityNotifier2D" parent="."]
+rect = Rect2( -20, -20, 40, 40 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 1 )
+
+[node name="Sprite" type="Sprite" parent="CollisionShape2D"]
+position = Vector2( 5.96046e-08, -2 )
+scale = Vector2( 0.05, 0.05 )
+
+[connection signal="screen_exited" from="VisibilityNotifier2D" to="." method="_on_VisibilityNotifier2D_screen_exited"]
 [sub_resource type="CircleShape2D" id=1]
 radius = 28.0179
 
