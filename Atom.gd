@@ -1,13 +1,14 @@
 extends RigidBody2D
 
-onready var player = get_node('../Player')
+onready var player = get_node('../../Player')
+onready var connections_parent = get_node('../../Connections')
 var in_attraction_area = false
 var speed = 0
 var scal = 1
 
-const electric_strengh = 10000
-
 var atom_type = 0
+
+var on_screen = true
 
 var connections = {}
 
@@ -22,9 +23,9 @@ func connect_atom(h):
 	joint.length = 15
 	joint.node_a = get_path()
 	joint.node_b = h.get_path()
-	get_parent().add_child(joint)
-	connections[h.get_path()] = joint
-	h.connections[get_path()] = joint
+	connections_parent.add_child(joint)
+	connections[h] = joint
+	h.connections[self] = joint
 
 func _ready():
 	elneg = electronegativity[atom_type]
@@ -45,7 +46,7 @@ func _ready():
 	scal *= 25
 	
 func _on_VisibilityNotifier2D_screen_exited():
-	queue_free()
+	on_screen = false
 
 func _on_Area2D_body_entered(body):
 	if body == self: in_attraction_area = true
@@ -60,17 +61,35 @@ func _physics_process(_delta):
 		elif (player.position + Vector2.LEFT.rotated(player.rotation)*50 - position).length_squared() < (player.position + Vector2.LEFT.rotated(player.rotation)*50 - player.attracted.position).length_squared():
 			player.attracted = self
 	update()
+	try_remove()
+
+func try_remove(a=[]):
+	if on_screen: return false
+	if not connections.keys():
+		queue_free()
+		return
+	a.append(self)
+	var h = true
+	for c in connections.keys():
+		if not c in a:
+			h = h and c.try_remove(a)
+	if h:
+		do_remove()
+
+func do_remove(a=[]):
+	a.append(self)
+	for c in connections.keys():
+		if not c in a:
+			c.do_remove(a)
+		if connections[c]:
+			connections[c].queue_free()
+	queue_free()
 
 func _draw():
 	for c in connections.keys():
-		if not has_node(c):
-			connections[c].queue_free()
-			connections.erase(c)
-			continue
-		var a = get_node(c)
-		var b = a.position - position
-		var d = a.get_node('./CollisionShape2D').scale.x
-		draw_line(b.normalized()*scal, b-(b.normalized()*a.scal), Color.white, 5)
+		var b = c.position - position
+		var d = c.get_node('./CollisionShape2D').scale.x
+		draw_line(b.normalized()*scal, b-(b.normalized()*c.scal), Color.white, 5)
 
 func _integrate_forces(state):
 	if in_attraction_area:
@@ -81,7 +100,7 @@ func _integrate_forces(state):
 	if not atom_type in [1, 9, 20, 21]:
 		for c in state.get_contact_count():
 			var h = state.get_contact_collider_object(c)
-			if h is RigidBody2D:
+			if h is RigidBody2D and not h in connections.keys() and not h.atom_type in [1, 9, 20, 21]:
 				if abs(h.elneg - elneg) > 1.7:
 					var anion = h
 					var cation = self
@@ -100,7 +119,6 @@ func _integrate_forces(state):
 					var a = 2 if atom_type == 0 else 8
 					var b = 2 if h.atom_type == 0 else 8
 					var electrons_shared = 1
-					# aussi todo: la suppression des molecules
 					
 					if outer_electrons+electrons_shared>a and h.outer_electrons+electrons_shared>b:
 						continue #TODO: look at current bonds and if this one is stonger remove them
@@ -108,3 +126,7 @@ func _integrate_forces(state):
 					outer_electrons += electrons_shared
 					h.outer_electrons += electrons_shared
 					connect_atom(h)
+
+
+func _on_VisibilityNotifier2D_screen_entered():
+	on_screen = true
