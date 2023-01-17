@@ -39,4 +39,8 @@ polygon = PoolVector2Array( 25, 0, -25, -25, -11, -12, -11, 11, -25, 25 )
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Player/Area2D"]
 polygon = PoolVector2Array( -15, 0, -100, -25, -100, 25 )
 
+[node name="Atoms" type="Node2D" parent="."]
+
+[node name="Connections" type="Node2D" parent="."]
+
 [connection signal="timeout" from="AtomTimer" to="." method="_on_AtomTimer_timeout"]
