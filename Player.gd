@@ -1,7 +1,7 @@
 extends KinematicBody2D
 
-const R_SPEED = 0.05
-const SPEED = 200
+const R_SPEED = 0.10
+const SPEED = 300
 onready var screen_size = get_viewport_rect().size
 var attracted = null
 
