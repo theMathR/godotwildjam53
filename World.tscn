@@ -1,17 +1,28 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://player.png" type="Texture" id=1]
 [ext_resource path="res://Player.gd" type="Script" id=2]
 [ext_resource path="res://World.gd" type="Script" id=3]
 [ext_resource path="res://Atom.tscn" type="PackedScene" id=4]
 [ext_resource path="res://attraction_ray.png" type="Texture" id=5]
+[ext_resource path="res://Louis George Cafe.ttf" type="DynamicFontData" id=6]
+[ext_resource path="res://Menu.gd" type="Script" id=7]
+[ext_resource path="res://h.wav" type="AudioStream" id=8]
+[ext_resource path="res://click.wav" type="AudioStream" id=9]
+[ext_resource path="res://music/drums.mp3" type="AudioStream" id=10]
+[ext_resource path="res://hurt.wav" type="AudioStream" id=11]
+[ext_resource path="res://levelup.wav" type="AudioStream" id=12]
 
 [sub_resource type="Curve2D" id=1]
 _data = {
 "points": PoolVector2Array( 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1025, 2, 0, 0, 0, 0, 1025, 601, 0, 0, 0, 0, 1, 600, 0, 0, 0, 0, 0, 1 )
 }
 
-[node name="World" type="Node2D"]
+[sub_resource type="DynamicFont" id=2]
+size = 32
+font_data = ExtResource( 6 )
+
+[node name="World" type="Node"]
 script = ExtResource( 3 )
 atom_scene = ExtResource( 4 )
 
@@ -33,7 +44,7 @@ position = Vector2( 0, 1 )
 rotation = 0.000975586
 
 [node name="Player" type="KinematicBody2D" parent="."]
-position = Vector2( 248, 129 )
+position = Vector2( 527, 295 )
 script = ExtResource( 2 )
 
 [node name="Sprite" type="Sprite" parent="Player"]
@@ -49,7 +60,6 @@ polygon = PoolVector2Array( 25, 0, -25, -25, -11, -12, -11, 11, -25, 25 )
 polygon = PoolVector2Array( -15, 0, -150, -30, -150, 30 )
 
 [node name="DamageCooldown" type="Timer" parent="Player"]
-wait_time = 0.5
 one_shot = true
 
 [node name="Ray" type="Sprite" parent="Player"]
@@ -58,72 +68,237 @@ position = Vector2( -92, 0 )
 scale = Vector2( 0.05, 0.05 )
 texture = ExtResource( 5 )
 
-[node name="Atoms" type="Node2D" parent="."]
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="Player"]
+stream = ExtResource( 8 )
+bus = "SE"
 
-[node name="Connections" type="Node2D" parent="."]
+[node name="Hurt" type="AudioStreamPlayer" parent="Player"]
+pause_mode = 2
+stream = ExtResource( 11 )
+volume_db = 10.0
+bus = "SE"
+
+[node name="Atoms" type="Node" parent="."]
+
+[node name="Connections" type="Node" parent="."]
 
 [node name="TopBar" type="PanelContainer" parent="."]
-margin_right = 1024.0
+anchor_right = 1.0
 margin_bottom = 28.0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="TopBar"]
-margin_left = 7.0
-margin_top = 7.0
-margin_right = 1017.0
-margin_bottom = 21.0
+margin_left = 5.0
+margin_top = 5.0
+margin_right = 1019.0
+margin_bottom = 24.0
 alignment = 1
 
 [node name="Level" type="Label" parent="TopBar/HBoxContainer"]
-margin_right = 334.0
-margin_bottom = 14.0
+margin_right = 335.0
+margin_bottom = 19.0
 size_flags_horizontal = 3
 text = "Level 1"
 align = 1
 valign = 1
 
 [node name="Temperature" type="Label" parent="TopBar/HBoxContainer"]
-margin_left = 338.0
-margin_right = 672.0
-margin_bottom = 14.0
+margin_left = 339.0
+margin_right = 674.0
+margin_bottom = 19.0
 size_flags_horizontal = 3
 text = "Temperature: 0°H"
 align = 1
 valign = 1
 
 [node name="Health" type="Label" parent="TopBar/HBoxContainer"]
-margin_left = 676.0
-margin_right = 1010.0
-margin_bottom = 14.0
+margin_left = 678.0
+margin_right = 1014.0
+margin_bottom = 19.0
 size_flags_horizontal = 3
 text = "Health: 100%"
 align = 1
 valign = 1
 
 [node name="BottomBar" type="PanelContainer" parent="."]
-anchor_bottom = 0.78
-margin_top = 573.0
-margin_right = 1024.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -33.0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="BottomBar"]
-margin_left = 7.0
-margin_top = 7.0
-margin_right = 1017.0
-margin_bottom = 21.0
+margin_left = 5.0
+margin_top = 5.0
+margin_right = 1019.0
+margin_bottom = 28.0
 
 [node name="Label" type="Label" parent="BottomBar/HBoxContainer"]
-margin_right = 153.0
-margin_bottom = 14.0
+margin_top = 2.0
+margin_right = 162.0
+margin_bottom = 21.0
 size_flags_horizontal = 0
 text = "Molecules to assemble:"
 valign = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="BottomBar/HBoxContainer"]
-margin_left = 157.0
-margin_right = 1010.0
-margin_bottom = 14.0
+margin_left = 166.0
+margin_right = 1014.0
+margin_bottom = 23.0
 size_flags_horizontal = 3
 alignment = 1
 
+[node name="PauseMenu" type="PanelContainer" parent="."]
+pause_mode = 2
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -200.0
+margin_top = -68.5
+margin_right = 200.0
+margin_bottom = 68.5
+script = ExtResource( 7 )
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PauseMenu"]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 393.0
+margin_bottom = 130.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="PauseMenu/VBoxContainer"]
+margin_right = 386.0
+margin_bottom = 36.0
+custom_fonts/font = SubResource( 2 )
+text = "Game paused"
+align = 1
+valign = 1
+
+[node name="Unpause" type="Button" parent="PauseMenu/VBoxContainer"]
+margin_top = 40.0
+margin_right = 386.0
+margin_bottom = 65.0
+text = "Unpause"
+
+[node name="Retry" type="Button" parent="PauseMenu/VBoxContainer"]
+margin_top = 69.0
+margin_right = 386.0
+margin_bottom = 94.0
+text = "Retry"
+
+[node name="Main_screen" type="Button" parent="PauseMenu/VBoxContainer"]
+margin_top = 98.0
+margin_right = 386.0
+margin_bottom = 123.0
+text = "Back to main screen"
+
+[node name="WinMenu" type="PanelContainer" parent="."]
+pause_mode = 2
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -200.0
+margin_top = -51.0
+margin_right = 200.0
+margin_bottom = 51.0
+script = ExtResource( 7 )
+
+[node name="VBoxContainer" type="VBoxContainer" parent="WinMenu"]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 393.0
+margin_bottom = 95.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="WinMenu/VBoxContainer"]
+margin_right = 386.0
+margin_bottom = 36.0
+custom_fonts/font = SubResource( 2 )
+text = "You won!"
+align = 1
+valign = 1
+
+[node name="Label2" type="Label" parent="WinMenu/VBoxContainer"]
+margin_top = 40.0
+margin_right = 386.0
+margin_bottom = 59.0
+text = "Plot twist: you were evil all along."
+align = 1
+
+[node name="Main_screen" type="Button" parent="WinMenu/VBoxContainer"]
+margin_top = 63.0
+margin_right = 386.0
+margin_bottom = 88.0
+text = "Back to main screen"
+
+[node name="LoseMenu" type="PanelContainer" parent="."]
+pause_mode = 2
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -200.0
+margin_top = -54.0
+margin_right = 200.0
+margin_bottom = 54.0
+script = ExtResource( 7 )
+
+[node name="VBoxContainer" type="VBoxContainer" parent="LoseMenu"]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 393.0
+margin_bottom = 101.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="LoseMenu/VBoxContainer"]
+margin_right = 386.0
+margin_bottom = 36.0
+custom_fonts/font = SubResource( 2 )
+text = "You lost!"
+align = 1
+valign = 1
+
+[node name="Retry" type="Button" parent="LoseMenu/VBoxContainer"]
+margin_top = 40.0
+margin_right = 386.0
+margin_bottom = 65.0
+text = "Retry"
+
+[node name="Main_screen" type="Button" parent="LoseMenu/VBoxContainer"]
+margin_top = 69.0
+margin_right = 386.0
+margin_bottom = 94.0
+text = "Back to main screen"
+
+[node name="Click" type="AudioStreamPlayer" parent="."]
+pause_mode = 2
+stream = ExtResource( 9 )
+autoplay = true
+bus = "SE"
+
+[node name="Drums" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 10 )
+bus = "Music"
+
+[node name="Levelup" type="AudioStreamPlayer" parent="."]
+pause_mode = 2
+stream = ExtResource( 12 )
+volume_db = 10.0
+bus = "SE"
+
 [connection signal="timeout" from="AtomTimer" to="." method="_on_AtomTimer_timeout"]
 [connection signal="timeout" from="TemperatureTimer" to="." method="_on_TemperatureTimer_timeout"]
+[connection signal="timeout" from="PhaseTimer" to="." method="_on_PhaseTimer_timeout"]
 [connection signal="timeout" from="Player/DamageCooldown" to="Player" method="_on_DamageCooldown_timeout"]
+[connection signal="pressed" from="PauseMenu/VBoxContainer/Unpause" to="PauseMenu" method="_on_Unpause_pressed"]
+[connection signal="pressed" from="PauseMenu/VBoxContainer/Retry" to="PauseMenu" method="_on_Retry_pressed"]
+[connection signal="pressed" from="PauseMenu/VBoxContainer/Main_screen" to="PauseMenu" method="_on_Main_screen_pressed"]
+[connection signal="pressed" from="WinMenu/VBoxContainer/Main_screen" to="WinMenu" method="_on_Main_screen_pressed"]
+[connection signal="pressed" from="LoseMenu/VBoxContainer/Retry" to="LoseMenu" method="_on_Retry_pressed"]
+[connection signal="pressed" from="LoseMenu/VBoxContainer/Main_screen" to="LoseMenu" method="_on_Main_screen_pressed"]
