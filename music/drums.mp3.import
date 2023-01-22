@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/drums.mp3-cffb46e7c77c4a0b55bee448a4cd2b4e.mp3str"
+
+[deps]
+
+source_file="res://music/drums.mp3"
+dest_files=[ "res://.import/drums.mp3-cffb46e7c77c4a0b55bee448a4cd2b4e.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0
